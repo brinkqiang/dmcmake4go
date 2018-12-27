@@ -1,33 +1,35 @@
-set(GOPATH "${CMAKE_CURRENT_BINARY_DIR}/go")
-file(MAKE_DIRECTORY ${GOPATH})
+set(GOPATH "${CMAKE_CURRENT_LIST_DIR}")
 
 function(ExternalGoProject_Add TARG)
   add_custom_target(${TARG} env GOPATH=${GOPATH} ${CMAKE_Go_COMPILER} get ${ARGN})
 endfunction(ExternalGoProject_Add)
 
-function(add_go_executable NAME GO_SOURCE)
+function(add_go_executable NAME)
+  message("enter ${NAME} ${ARGN}")
+
   if(WIN32)
     set(EXE_NAME "${NAME}.exe")
   else(WIN32)
     set(EXE_NAME "${NAME}")
   endif(WIN32)
 
-  get_filename_component(MAIN_SRC_ABS ${GO_SOURCE} ABSOLUTE)
-  message("add_go_executable ${MAIN_SRC_ABS}")
+  string(REGEX REPLACE ";"  " " GO_SOURCE_SPACE "${ARGN}")
 
-  string(REGEX REPLACE ";"  " " GO_SOURCE_SPACE "${GO_SOURCE}")
-  message("COMMAND ${CMAKE_Go_COMPILER} build -o ${EXECUTABLE_OUTPUT_PATH}/${EXE_NAME} ${CMAKE_GO_FLAGS} ${GO_SOURCE_SPACE}")
-  message("add_go_executable ${NAME} ${GO_SOURCE_SPACE}")
+  set(GO_BUILD_CMD "${CMAKE_Go_COMPILER} build -o ${EXECUTABLE_OUTPUT_PATH}/${EXE_NAME} ${GO_SOURCE_SPACE}")
+  
+  message("${GO_BUILD_CMD}")
 
+  add_custom_target(${NAME} ALL)
+  
   add_custom_command(
-    OUTPUT ${EXECUTABLE_OUTPUT_PATH}/${EXE_NAME} 
-    COMMAND ${CMAKE_Go_COMPILER} build -o ${EXECUTABLE_OUTPUT_PATH}/${EXE_NAME} ${CMAKE_GO_FLAGS} ${GO_SOURCE_SPACE}
-    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
-
-  add_custom_target(${NAME} ALL DEPENDS ${EXECUTABLE_OUTPUT_PATH}/${EXE_NAME}
-  WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+    TARGET ${NAME}
+    PRE_BUILD
+    COMMAND ${CMAKE_Go_COMPILER} build -o ${EXECUTABLE_OUTPUT_PATH}/${EXE_NAME} ${ARGN}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+    DEPENDS ${ARGN})
 
   install(PROGRAMS ${EXECUTABLE_OUTPUT_PATH}/${EXE_NAME} DESTINATION bin)
+  
 endfunction(add_go_executable)
 
 function(add_go_library NAME BUILD_TYPE)

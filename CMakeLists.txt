@@ -11,7 +11,8 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 include(cmake/golang.cmake)
 include(cmake/flags.cmake)
 
-FILE(GLOB HELLO_SOURCE
-${CMAKE_CURRENT_SOURCE_DIR}/src/*.go)
+
+FILE(GLOB HELLO_SOURCE RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" src/*.go)
+message("HELLO_SOURCE ${HELLO_SOURCE}")
 
 add_go_executable(hello ${HELLO_SOURCE})
