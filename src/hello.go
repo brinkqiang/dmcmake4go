@@ -1,7 +1,7 @@
-package main
+package hello
 
 import "fmt"
 
-func test() {
+func main() {
 	fmt.Println("This is a golang project with cmake.")
 }
