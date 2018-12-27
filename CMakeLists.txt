@@ -12,12 +12,7 @@ include(cmake/golang.cmake)
 include(cmake/flags.cmake)
 
 FILE(GLOB HELLO_SOURCE RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" 
-src/hello/hello.go)
-
-add_go_executable(hello ${HELLO_SOURCE})
-
-FILE(GLOB HELLO2_SOURCE RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" 
-src/hello2/hello2.go
+src/main.go
 )
 
-add_go_library(hello2 SHARED ${HELLO2_SOURCE})
+add_go_executable(hello ${HELLO_SOURCE})

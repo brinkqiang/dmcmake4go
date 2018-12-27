@@ -1,11 +1,11 @@
-set(GOPATH "${CMAKE_CURRENT_LIST_DIR}")
+set(GOPATH "${CMAKE_SOURCE_DIR}")
 
 function(ExternalGoProject_Add TARG)
   add_custom_target(${TARG} env GOPATH=${GOPATH} ${CMAKE_Go_COMPILER} get ${ARGN})
 endfunction(ExternalGoProject_Add)
 
 function(add_go_executable NAME)
-  message("enter ${NAME} ${ARGN}")
+  message("enter ${GOPATH} ${NAME} ${ARGN}")
 
   if(WIN32)
     set(EXE_NAME "${NAME}.exe")
@@ -15,7 +15,7 @@ function(add_go_executable NAME)
 
   string(REGEX REPLACE ";"  " " GO_SOURCE_SPACE "${ARGN}")
 
-  set(GO_BUILD_CMD "${CMAKE_Go_COMPILER} build -o ${EXECUTABLE_OUTPUT_PATH}/${EXE_NAME} ${GO_SOURCE_SPACE}")
+  set(GO_BUILD_CMD "env GOPATH=${GOPATH} ${CMAKE_Go_COMPILER} build -o ${EXECUTABLE_OUTPUT_PATH}/${EXE_NAME} ${GO_SOURCE_SPACE}")
   
   message("${GO_BUILD_CMD}")
 
@@ -24,7 +24,7 @@ function(add_go_executable NAME)
   add_custom_command(
     TARGET ${NAME}
     PRE_BUILD
-    COMMAND ${CMAKE_Go_COMPILER} build -o ${EXECUTABLE_OUTPUT_PATH}/${EXE_NAME} ${ARGN}
+    COMMAND env GOPATH=${GOPATH} ${CMAKE_Go_COMPILER} build -o ${EXECUTABLE_OUTPUT_PATH}/${EXE_NAME} ${ARGN}
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
     DEPENDS ${ARGN})
 
@@ -53,7 +53,7 @@ function(add_go_library NAME BUILD_TYPE)
   add_custom_command(
     TARGET ${NAME}
     PRE_BUILD
-    COMMAND ${CMAKE_Go_COMPILER} build ${BUILD_MODE} -o ${EXECUTABLE_OUTPUT_PATH}/${LIB_NAME} ${ARGN}
+    COMMAND env GOPATH=${GOPATH} ${CMAKE_Go_COMPILER} build ${BUILD_MODE} -o ${EXECUTABLE_OUTPUT_PATH}/${LIB_NAME} ${ARGN}
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
     DEPENDS ${ARGN})
 
