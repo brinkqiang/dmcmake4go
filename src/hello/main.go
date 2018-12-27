@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-    fmt.Printf("This is a golang project with cmake %x.", 2018)
+    fmt.Printf("This is a golang project with cmake %d.", 2018)
 }
