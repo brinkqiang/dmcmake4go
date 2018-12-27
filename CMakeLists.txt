@@ -13,6 +13,5 @@ include(cmake/flags.cmake)
 
 
 FILE(GLOB HELLO_SOURCE RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" src/*.go)
-message("HELLO_SOURCE ${HELLO_SOURCE}")
 
 add_go_executable(hello ${HELLO_SOURCE})
