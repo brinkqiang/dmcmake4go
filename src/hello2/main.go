@@ -2,7 +2,7 @@ package main
 
 import (
     "fmt"
-    "./math"
+    "hello2/math"
 )
 
 func main() {
