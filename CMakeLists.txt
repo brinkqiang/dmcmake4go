@@ -12,13 +12,7 @@ include(cmake/golang.cmake)
 include(cmake/flags.cmake)
 
 FILE(GLOB HELLO_SOURCE RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" 
-src/hello/main.go
+src/dmcmake4go.go
 )
 
-add_go_executable(hello ${HELLO_SOURCE})
-
-FILE(GLOB HELLO2_SOURCE RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" 
-src/hello2/main.go
-)
-
-add_go_executable(hello2 ${HELLO2_SOURCE})
+add_go_executable(dmcmake4go ${HELLO_SOURCE})
