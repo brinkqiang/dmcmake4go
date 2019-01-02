@@ -16,5 +16,5 @@ func main() {
 	fmt.Println(now.Format("15:04:05 2006/1/2"))
 	fmt.Println(now.Format("2006/1/2"))
 
-	fmt.Printf("This is a golang project with cmake %d.", 2018)
+	fmt.Println("This is a golang project with cmake", 2018)
 }
